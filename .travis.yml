@@ -22,17 +22,17 @@ after_success:
   - docker push gladyshav/multi-nginx
   - docker push gladyshav/multi-server
   - docker push gladyshav/multi-worker
-deploy:
-  provider: elasticbeanstalk
-  region: "us-east-2"
-  app: "react-docker"
-  env: "ReactDocker-env"
-  bucket_name: "elasticbeanstalk-us-east-2-007472637022"
-  bucket_path: "react-docker"
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: "$AWS_SECRET_SECRET"
-  # app: "react-docker" - name of project
-  # http://reactdocker-env.ntm2dupqic.us-east-2.elasticbeanstalk.com/
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-2"
+#   app: "react-docker"
+#   env: "ReactDocker-env"
+#   bucket_name: "elasticbeanstalk-us-east-2-007472637022"
+#   bucket_path: "react-docker"
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key:
+#     secure: "$AWS_SECRET_SECRET"
+#   # app: "react-docker" - name of project
+#   # http://reactdocker-env.ntm2dupqic.us-east-2.elasticbeanstalk.com/
