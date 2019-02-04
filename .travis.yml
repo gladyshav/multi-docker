@@ -1,0 +1,38 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t gladyshav/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run gladyshav/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t gladyshav/multi-client ./client
+  - docker build -t gladyshav/multi-nginx ./nginx
+  - docker build -t gladyshav/multi-server ./server
+  - docker build -t gladyshav/multi-worker ./worker
+
+
+# Log in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push them to docker hub
+  - docker push gladyshav/multi-client
+  - docker push gladyshav/multi-nginx
+  - docker push gladyshav/multi-server
+  - docker push gladyshav/multi-worker
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "react-docker"
+  env: "ReactDocker-env"
+  bucket_name: "elasticbeanstalk-us-east-2-007472637022"
+  bucket_path: "react-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_SECRET"
+  # app: "react-docker" - name of project
+  # http://reactdocker-env.ntm2dupqic.us-east-2.elasticbeanstalk.com/
